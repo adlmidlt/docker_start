@@ -1,0 +1,24 @@
+# Исключаем системные и редакторные файлы
+.git
+.gitignore
+.vscode
+.idea
+*.tmp
+*.log
+
+# Исключаем секреты (КРИТИЧНО ВАЖНО!)
+.env
+.env.*
+*.key
+*.pem
+credentials/
+
+# Исключаем ненужные для сборки файлы
+README.md
+docs/
+test/
+vendor/ # если используете go mod
+
+# Исключаем сам Dockerfile и связанные файлы
+Dockerfile
+.dockerignore
