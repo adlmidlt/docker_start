@@ -7,8 +7,8 @@
 *.log
 
 # Исключаем секреты (КРИТИЧНО ВАЖНО!)
-.env
-.env.*
+#.env
+#.env.*
 *.key
 *.pem
 credentials/
