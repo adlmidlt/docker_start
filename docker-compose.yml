@@ -10,10 +10,13 @@ services:
     environment:
       - ENV=${APP_ENV}
       - DATABASE_URL=postgres://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
     env_file:
       - .env
     depends_on:
       - postgresql
+      - redis
     restart: unless-stopped
     networks:
       - app-network
@@ -25,7 +28,8 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
     env_file:
       - .env
     networks:
@@ -39,8 +43,25 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    volumes:
+      - redisdata:/data
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
 volumes:
-  pgdata:
+  postgres_data:
+  redisdata:
 
 networks:
   app-network:

@@ -5,7 +5,7 @@ FROM golang:1.25.0-alpine AS builder
 WORKDIR /app
 
 # Копируем файлы в рабочую директорию, они меняются редко.
-COPY go.mod ./
+COPY go.mod go.sum .env ./
 
 # Подгружает зависимости, флаг -х показывает подробную инфу о процессе загрузки, что помогает в отладке.
 RUN go mod download -x
